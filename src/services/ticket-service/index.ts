@@ -15,9 +15,19 @@ async function findTicketType() {
   return result;
 }
 
+async function insertTicket(ticketTypeId: number, userId: number) {
+  const enrollmentId =  await ticketRepository.findEnrollmentId(userId);
+  await ticketRepository.insertTicket(ticketTypeId, enrollmentId.id);
+
+  const result = await findTicket(userId);
+  
+  return result;
+}
+
 const ticketService = {
   findTicket,
   findTicketType,
+  insertTicket,
 };
 
 export default ticketService;

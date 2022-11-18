@@ -25,3 +25,17 @@ export async function getTicketTypes(req: AuthenticatedRequest, res: Response) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
+
+export async function postTicket(req: AuthenticatedRequest, res: Response) {
+  // const { userId } = req;
+  const userId = 765;
+  const { ticketTypeId } = req.body;
+  try {
+    const result = await ticketService.insertTicket(Number(ticketTypeId), userId);
+    return res.status(httpStatus.CREATED).send(result);
+  } catch (error) {
+    console.log(error.message);
+    if (error.name === "NotFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+}
