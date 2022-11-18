@@ -1,10 +1,15 @@
 import { prisma } from "@/config";
 
-async function findTicket(enrollmentId: number) {
+async function findTicket(userId: number) {
   return prisma.ticket.findFirst({
     where: {
-      enrollmentId: enrollmentId
-    }
+      Enrollment: {
+        userId: userId,
+      },
+    },
+    include: {
+      TicketType: true,
+    },
   });
 }
 

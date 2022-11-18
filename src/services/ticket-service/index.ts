@@ -2,22 +2,10 @@ import { notFoundError } from "@/errors";
 import ticketRepository from "@/repositories/ticket-repository";
 
 async function findTicket(userId: number) {
-  const enrollment = await ticketRepository.findEnrollmentId(userId);
-  const ticket = await ticketRepository.findTicket(enrollment.id);
-  const ticketType = await ticketRepository.findTicketTypeById(ticket.ticketTypeId);
+  const result = await ticketRepository.findTicket(userId);
 
-  if (!ticket) throw notFoundError();
-    
-  const result = {
-    id: ticket.id,
-    status: ticket.status, //RESERVED | PAID
-    ticketTypeId: ticket.ticketTypeId,
-    enrollmentId: ticket.enrollmentId,
-    TicketType: ticketType,
-    createdAt: ticket.createdAt,
-    updatedAt: ticket.updatedAt,
-  };
-  console.log(result);
+  if (!result) throw notFoundError;
+
   return result;
 }
 
