@@ -45,13 +45,23 @@ async function findTicketbyUserAndTicketId(ticketId: number, userId: number) {
 }
 
 async function insertTicket(ticketTypeId: number, enrollmentId: number) {
-  console.log(ticketTypeId, enrollmentId);
   return prisma.ticket.create({
     data: {
       ticketTypeId: ticketTypeId,
       enrollmentId: enrollmentId,
       status: "RESERVED",
     },
+  });
+}
+
+async function payTicket(ticketId: number) {
+  return prisma.ticket.update({
+    where: {
+      id: ticketId
+    },
+    data: {
+      status: "PAID"
+    }
   });
 }
 
@@ -62,6 +72,7 @@ const ticketRepository = {
   findEnrollmentId,
   insertTicket,
   findTicketbyUserAndTicketId,
+  payTicket
 };
 
 export default ticketRepository;
